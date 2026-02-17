@@ -1,0 +1,9 @@
+mqtt:
+  broker: localhost
+  port: 1883
+  client_id: myk46
+  timeout: 20
+  max_retries: 3
+  topic: "test/topic"
+  retain: false
+  qos: 1
