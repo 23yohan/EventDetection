@@ -24,6 +24,8 @@ Config::~Config(){};
 
 void Config::parser()
 {
+    // Get system requirements
+    _sysConfig._osType = _config["system"]["os"].as<std::string>(); 
     
     // Get MQTT stuff
     _mqttConfig._broker     = _config["mqtt"]["broker"].as<std::string>();
@@ -34,7 +36,15 @@ void Config::parser()
     _mqttConfig._qos        = _config["mqtt"]["qos"].as<int>();
     _mqttConfig._topic      = _config["mqtt"]["topic"].as<std::string>();
     _mqttConfig._maxRetries = _config["mqtt"]["max_retries"].as<int>();
-    
+
+    // Get camera stuff
+    _camConfig._deviceID = _config["camera"]["device_id"].as<std::string>();
+    _camConfig._devicePath = _config["camera"]["device_path"].as<std::string>(); 
+    _camConfig._timeout = _config["camera"]["timeout"].as<int>();
+    // We also want to store the system type so we can handle the device path accordingly
+    _camConfig._systemOS = _sysConfig._osType;
+        
 }
 
 struct mqttParam Config::get_mqtt_param() { return _mqttConfig; }
+struct cameraParam Config::get_camera_param() { return _camConfig; }
