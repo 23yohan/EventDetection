@@ -1,3 +1,6 @@
+system:
+  os: mac
+
 mqtt:
   broker: localhost
   port: 1883
@@ -7,3 +10,11 @@ mqtt:
   topic: "test/topic"
   retain: false
   qos: 1
+
+camera:
+  device_id: "Logitech Web Camera"
+  device_path: 1
+  timeout: 5
+
+image:
+  dimensions: [600,600]
