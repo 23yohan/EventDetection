@@ -1,6 +1,17 @@
 # Real-Time Event Detection and Telementry System
 
-The goal of this project is to montior real time detection of objects within a camera feed. The data is then aggregated and sent to a database & is publshed on MQTT topics.
+## Overview
+
+This project is a modular real-time video processing system written in modern C++.
+
+The goal of this project is to demonstrate the design and implementation of a long-running service that performs continous video monitoring, detects meaningful events, and publishes structured telementry to external systems.
+
+This project will focus on modularity and reliable event generation, rather than machine learning accuracy. The intent is to model real-world edge environments where stability, reliablilty and maintainability are more important that raw computer vision performance
+
+## Dependencies
+- OpenCV: `brew install opencv` (macOS) or `sudo apt-get install libopencv-dev` (Linux)
+- Paho MQTT: included as submodule
+- yaml-cpp: included as submodule
 
 ## Installation
 
