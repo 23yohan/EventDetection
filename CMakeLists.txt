@@ -24,6 +24,7 @@ target_link_libraries(app_c PRIVATE
     config_module
     mqtt_module
     camera_module
+    image_processor_module
     ${OpenCV_LIBS}
     paho-mqttpp3
     paho-mqtt3as
