@@ -20,10 +20,11 @@ private:
     int _dimensionY;
     int _threshold;
     int _blurSize;
+    int _kernelSize;
 
     cv::Mat _currentFrame;
     cv::Mat _previousFrame;
-
+    cv::Mat _mask;
 
 public:
     ImageProcessing(struct imageConfig conf);
