@@ -49,6 +49,7 @@ void Config::parser()
     _imgConfig._dimensionY = _config["image"]["dimensions"][1].as<int>();
     _imgConfig._threshold = _config["image"]["threshold"].as<int>();
     _imgConfig._blurSize = _config["image"]["blurSize"].as<int>();
+    _imgConfig._kernelSize = _config["image"]["kernelSize"].as<int>();
         
 }
 

@@ -35,6 +35,7 @@ struct imageConfig
     int _dimensionY;
     int _threshold;
     int _blurSize;
+    int _kernelSize;
 
     // More parameters
 };
