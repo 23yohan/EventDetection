@@ -18,3 +18,5 @@ camera:
 
 image:
   dimensions: [600,600]
+  threshold: 20
+  blurSize: 3
