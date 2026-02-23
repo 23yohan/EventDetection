@@ -20,3 +20,4 @@ image:
   dimensions: [600,600]
   threshold: 20
   blurSize: 3
+  kernelSize: 5 # may use 7 or 9 depending how big the objects are in the image
