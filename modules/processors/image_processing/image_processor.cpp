@@ -9,6 +9,7 @@ ImageProcessing::ImageProcessing(struct imageConfig conf)
     _dimensionY = conf._dimensionY;
     _threshold = conf._threshold;
     _blurSize = conf._blurSize;
+    _kernelSize = conf._kernelSize;
 
     // Maybe some more stuff here
 }
@@ -44,25 +45,21 @@ void ImageProcessing::create_motion_mask()
 
     cv::absdiff(greyCur, greyPrev, frameDiff);
 
-    // Use median blur to complete edge detection of objects
-    cv::medianBlur(frameDiff, frameDiff, _blurSize);
-
+    // Using a guassian blur for better smoothing and reduction of false positives
+    cv::GaussianBlur(frameDiff, frameDiff, cv::Size(_blurSize, _blurSize), 0);
     cv::threshold(frameDiff, mask, 25, MAX_PIXEL_THRESHOLD,cv::THRESH_BINARY);
 
-    cv::medianBlur(mask, mask, _blurSize);
+    // perform some morphology to remove some extra noise while keeping image binary.
+    cv::Mat kernel = cv::getStructuringElement(cv::MORPH_ELLIPSE, cv::Size(_kernelSize,_kernelSize));
+    cv::morphologyEx(mask, mask, cv::MORPH_OPEN, kernel); //removes background noise (removes white spots in black areas)
+    cv::morphologyEx(mask, mask, cv::MORPH_CLOSE, kernel); // removes black spots in white areas
 
-    cv::Mat kernel = cv::Mat::ones(cv::Size(5,5), CV_32F);
-    cv::morphologyEx(mask, mask, cv::MORPH_CLOSE, kernel);
-
-    cv::imshow("Frame mask", mask);
-    cv::waitKey(0);
-
-
+    _mask = mask;
 }
 
 void ImageProcessing::detect_motion(cv::Mat& currentFrame)
 {
-    //update class variables 
+    //update class members 
     _previousFrame = _currentFrame.clone();
     _currentFrame = currentFrame.clone();
 
