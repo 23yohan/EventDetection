@@ -29,6 +29,16 @@ struct systemParam
     std::string _osType;
 };
 
+struct imageConfig
+{
+    int _dimensionX;
+    int _dimensionY;
+    int _threshold;
+    int _blurSize;
+
+    // More parameters
+};
+
 class Config
 {
 private:
@@ -39,6 +49,7 @@ private:
     struct mqttParam _mqttConfig;
     struct cameraParam _camConfig;
     struct systemParam _sysConfig;
+    struct imageConfig _imgConfig;
     
 
 public:
@@ -47,6 +58,7 @@ public:
     // Get and set functions
     struct mqttParam get_mqtt_param();
     struct cameraParam get_camera_param();
+    struct imageConfig get_image_param();
 
     // Parser
     void parser();

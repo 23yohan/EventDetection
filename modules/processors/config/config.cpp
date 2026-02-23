@@ -43,8 +43,15 @@ void Config::parser()
     _camConfig._timeout = _config["camera"]["timeout"].as<int>();
     // We also want to store the system type so we can handle the device path accordingly
     _camConfig._systemOS = _sysConfig._osType;
+
+    // Get image stuff
+    _imgConfig._dimensionX = _config["image"]["dimensions"][0].as<int>();
+    _imgConfig._dimensionY = _config["image"]["dimensions"][1].as<int>();
+    _imgConfig._threshold = _config["image"]["threshold"].as<int>();
+    _imgConfig._blurSize = _config["image"]["blurSize"].as<int>();
         
 }
 
 struct mqttParam Config::get_mqtt_param() { return _mqttConfig; }
 struct cameraParam Config::get_camera_param() { return _camConfig; }
+struct imageConfig Config::get_image_param() { return _imgConfig; }
