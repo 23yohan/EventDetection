@@ -11,7 +11,6 @@ ImageProcessing::ImageProcessing(struct imageConfig conf)
     _blurSize = conf._blurSize;
     _kernelSize = conf._kernelSize;
 
-    // Maybe some more stuff here
 }
 
 ImageProcessing::~ImageProcessing() {}
@@ -57,6 +56,46 @@ void ImageProcessing::create_motion_mask()
     _mask = mask;
 }
 
+void ImageProcessing::compute_contour_detection()
+{
+    std::vector<std::vector<cv::Point>> contours;
+    cv::Mat mask = _mask.clone();
+    // We perform contour detection on the mask here
+    cv::findContours(mask, contours, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_SIMPLE);
+    
+    _detections.clear();
+
+    for (int i = 0; i < contours.size(); i++)
+    {
+        double area = cv::contourArea(contours[i]);
+
+        if (area < _minContourArea || area > _maxContourArea)
+        {
+            // Out of our scope
+            continue;
+        }
+
+        // get a bounding box around the contour
+        cv::Rect boundBox = cv::boundingRect(contours[i]);
+        _detections.push_back(boundBox);
+    }
+}
+
+void ImageProcessing::draw_detection()
+{
+    cv::Mat motionFrame = _currentFrame;
+    const std::string& text = "Number of detections: " + std::to_string(_detections.size());
+
+    for (const auto& bbox : _detections)
+    {
+        cv::rectangle(motionFrame, bbox, cv::Scalar(0,225,0), 2);
+        
+    }
+    cv::putText(motionFrame, text, cv::Point(100,100), cv::FONT_HERSHEY_COMPLEX, 1, cv::Scalar(0,0,255), 1);
+    
+    _motionFrame = motionFrame.clone();
+}
+
 void ImageProcessing::detect_motion(cv::Mat& currentFrame)
 {
     //update class members 
@@ -69,4 +108,21 @@ void ImageProcessing::detect_motion(cv::Mat& currentFrame)
     }
 
     ImageProcessing::create_motion_mask();
+    ImageProcessing::compute_contour_detection();
+    ImageProcessing::draw_detection();
 }
+
+void ImageProcessing::display_frames()
+{
+    // Check if all the frames are empty or not
+    if (_mask.empty() || _motionFrame.empty())
+    {
+        return;
+    }
+    cv::imshow("Mask", _mask);
+    cv::imshow("Motion", _motionFrame);
+}
+
+std::vector<cv::Rect> ImageProcessing::get_detections() {return _detections;}
+cv::Mat ImageProcessing::get_motion_frame() { return _motionFrame; }
+cv::Mat ImageProcessing::get_mask() { return _mask; }
